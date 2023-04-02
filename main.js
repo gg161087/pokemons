@@ -1,47 +1,33 @@
-const carouselImages = document.querySelector("#carousel-images");
-const pokemons = []
-const pokesNext = []
-const prokesPrev = []
+const container = document.getElementById('container')
+const carouselInner = document.getElementById('carousel-inner')
 
-let currentIndex = 0;
-
-const showImage = () => {
-    carouselImages.innerHTML = `
-        <img src="${pokemons[currentIndex].imagen}" alt="${pokemons[currentIndex].modelo}">
-        <div class="caption">
-            <p>${pokemons[currentIndex].marca}</p>
-            <p>${pokemons[currentIndex].modelo}</p>
-            <p>${pokemons[currentIndex].precio}</p>
-        </div>
-    `;
-}
-
-const nextImage = () => {
-    currentIndex++;
-    if (currentIndex === pokemons.length) {
-        currentIndex = 0;
-    }
-    showImage();
-}
-
-const prevImage = () => {
-    currentIndex--;
-    if (currentIndex < 0) {
-        currentIndex = pokemons.length - 1;
-    }
-    showImage();
-    }
-
-
-fetch('https://pokeapi.co/api/v2/pokemon')
+let contador = 0;
+const fetchUrl = () => {
+    fetch('./database/pokemons.json')
     .then(res => res.json())
-    .then(data => {
-        console.log(data.results);
-        for (const i of data.results) {        
-            pokemons.push(i);
-        }
-        showImage();
-    document.querySelector("#prevBtn").addEventListener("click", prevImage);
-    document.querySelector("#nextBtn").addEventListener("click", nextImage);
+    .then(data => {        
+        for (const iterator of data) {            
+            fetch(`${iterator.url}`)
+            .then(res => res.json())
+            .then(data => {                
+                if (contador < 151) {  
+                    if(data.id == 1){
+                        carouselInner.innerHTML += `
+                            <div class="carousel-item active">
+                                <img src="${data.sprites.other.dream_world.front_default}" class="d-block w-50" alt="${data.name}">
+                            </div>
+                        `
+                    }else{
+                        carouselInner.innerHTML += `
+                            <div class="carousel-item">
+                                <img src="${data.sprites.other.dream_world.front_default}" class="d-block w-50" alt="${data.name}">
+                            </div>
+                        `                        
+                    }
+                    contador++
+                }              
+            })                     
+        }                    
     })
-    .catch(error => console.error(error));
+}
+fetchUrl();
