@@ -6,9 +6,10 @@
 #container{
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 	text-align: center;
-	height: 50vh;
+	height: auto;
 }
 .carousel{
 	display: flex;
@@ -19,11 +20,17 @@
 }
 #carousel-inner{
 	display: flex;
-	justify-content: space-around;
-	
-	width: 100%;
+	justify-content: center;	
+	width: 50%;
 }
-.carousel-item{	
+.carousel-item{
+	margin-top: 5vh;
+	width: 50%;
+	justify-content: center;	
+	align-items: center;
+	text-align: center;
+}
+.card{
 	align-items: center;
 	text-align: center;
 }
